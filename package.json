@@ -1,0 +1,45 @@
+{
+  "name": "dnd_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "webpack serve --mode development",
+    "build": "webpack --mode production",
+    "lint": "eslint .",
+    "test": "node --experimental-vm-modules node_modules/jest/bin/jest.js --passWithNoTests",
+    "coverage": "node --experimental-vm-modules node_modules/jest/bin/jest.js --coverage",
+    "show:coverage": "npx http-server coverage/lcov-report -o",
+    "doc": "jsdoc -c jsdoc.conf.json",
+    "show:doc": "npx http-server doc -o",
+    "show:dist": "npx http-server dist -o"
+  },
+  "author": "coursar",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.28.0",
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "babel-jest": "^29.7.0",
+    "babel-loader": "^9.2.1",
+    "css-loader": "^7.1.2",
+    "eslint": "^8.57.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-plugin-import": "^2.32.0",
+    "html-loader": "^5.1.0",
+    "html-webpack-plugin": "^5.6.3",
+    "jest": "^29.7.0",
+    "jest-environment-jsdom": "^29.7.0",
+    "jsdoc": "^4.0.4",
+    "mini-css-extract-plugin": "^2.9.4",
+    "webpack": "^5.98.0",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.3"
+  },
+  "dependencies": {
+    "core-js": "^3.49.0"
+  },
+  "overrides": {
+    "uuid": "^14.0.0"
+  }
+}
