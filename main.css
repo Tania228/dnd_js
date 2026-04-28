@@ -1,0 +1,97 @@
+* {
+    box-sizing: border-box; 
+}
+
+body {
+    min-height: 100%; 
+    margin: 0;
+    padding: 1%;
+}
+
+.container-for-column {
+    display: flex;
+    gap: 15px;
+    padding: 10px;
+    background-color: #DCDCDC;
+    min-height: calc(100vh - 2%); 
+}
+
+.column {
+    flex: 1;
+    padding: 20px;
+    background-color: #9ab9b982;
+    display: flex;
+    flex-direction: column;
+    list-style: none;
+}
+
+.cards-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-add-card {
+    width: 150px;
+    padding: 2px;
+    cursor: pointer;
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.text-display {
+    background-color: #DCDCDC;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    word-wrap: break-word;
+    list-style-type: none;
+    position: relative;
+    padding-right: 25px;
+    transition: opacity 0.2s ease;
+    user-select: none;
+}
+
+.text-display:hover {
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.text-display[draggable="true"]:active {
+    cursor: grabbing !important;
+}
+
+.drag-placeholder {
+    background-color: #e0e0e0 !important;
+    border: 2px dashed #999 !important;
+    opacity: 0.6;
+    margin-bottom: 10px;
+    border-radius: 4px;
+    list-style: none;
+    transition: all 0.2s ease;
+}
+
+.delete-card {
+    position: absolute;
+    top: 8px;    
+    right: 8px;  
+    cursor: pointer;
+    color: #999;
+    font-size: 14px;
+}
+
+.delete-card:hover {
+    color: #ff0000;
+}
+
+.text-task {
+    margin-bottom: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    width: 100%;
+}
+
+
+/*# sourceMappingURL=main.css.map*/
