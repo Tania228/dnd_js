@@ -8,14 +8,77 @@ export default class TaskTracker {
             this.placeholder = null;
             this.dragOffsetX = 0;
             this.dragOffsetY = 0;
+
+            this.restoreFromLocalStorage();
         } 
         catch(error) {
             console.error(`Ошибка: ${error.message}`);
         }
     }
 
+    saveToLocalStorage() {
+        const boardState = [];
+        
+        this.columns.forEach(column => {
+            const columnId = column.dataset.columnId || this.getColumnIndex(column);
+            const cardsContainer = column.querySelector('.cards-container');
+            const cards = cardsContainer.querySelectorAll('.text-display');
+            
+            const columnCards = [];
+            cards.forEach(card => {
+                columnCards.push(card.textContent.replace('✕', '').trim());
+            });
+            
+            boardState.push({
+                columnId: columnId,
+                cards: columnCards
+            });
+        });
+        
+        localStorage.setItem('taskTrackerBoardState', JSON.stringify(boardState));
+    }
+
+    getColumnIndex(column) {
+        return Array.from(this.columns).indexOf(column);
+    }
+
+    restoreFromLocalStorage() {
+        const savedState = localStorage.getItem('taskTrackerBoardState');
+        
+        if (!savedState) return;
+        
+        try {
+            const boardState = JSON.parse(savedState);
+            
+            boardState.forEach((columnData, index) => {
+                if (index < this.columns.length) {
+                    const column = this.columns[index];
+                    const cardsContainer = column.querySelector('.cards-container');
+
+                    const existingCards = cardsContainer.querySelectorAll('.text-display');
+                    existingCards.forEach(card => card.remove());
+
+                    columnData.cards.forEach(cardText => {
+                        const textDisplay = document.createElement('li');
+                        textDisplay.className = 'text-display';
+                        textDisplay.textContent = cardText;
+                        
+                        const deleteBtn = this.createDeleteButton(textDisplay);
+                        textDisplay.appendChild(deleteBtn);
+                        
+                        this.addDragHandlers(textDisplay);
+                        cardsContainer.appendChild(textDisplay);
+                    });
+                }
+            });
+        } catch(error) {
+            console.error(`Ошибка при восстановлении из localStorage: ${error.message}`);
+        }
+    }
+
     deleteCard(cardElement) {
         cardElement.remove();
+        this.saveToLocalStorage();
     }
 
     createDeleteButton(cardElement) {
@@ -58,6 +121,7 @@ export default class TaskTracker {
             element.style.cursor = '';
             this.removePlaceholder();
             this.draggedCard = null;
+            this.saveToLocalStorage(); 
         });
         
         element.addEventListener('dragover', (e) => {
@@ -127,6 +191,7 @@ export default class TaskTracker {
                 this.removePlaceholder();
                 this.draggedCard.style.opacity = '1';
                 this.draggedCard = null;
+                this.saveToLocalStorage();
             });
         });
     }
@@ -180,7 +245,8 @@ export default class TaskTracker {
                         this.addDragHandlers(textDisplay);
                         
                         cardsContainer.appendChild(textDisplay);
-                        inputEx.remove(); 
+                        inputEx.remove();
+                        this.saveToLocalStorage(); 
                     }
                 }
             });
