@@ -85,6 +85,7 @@ export default class TaskTracker {
         const deleteBtn = document.createElement('span');
         deleteBtn.className = 'delete-card';
         deleteBtn.innerHTML = '✕';
+        deleteBtn.style.display = 'none';
         
         deleteBtn.addEventListener('click', (e) => {
             e.stopPropagation();
@@ -96,6 +97,20 @@ export default class TaskTracker {
 
     addDragHandlers(element) {
         element.draggable = true;
+
+        element.addEventListener('mouseenter', () => {
+            const deleteBtn = element.querySelector('.delete-card');
+                if (deleteBtn) {
+                    deleteBtn.style.display = 'block';
+            }
+        });
+    
+        element.addEventListener('mouseleave', () => {
+            const deleteBtn = element.querySelector('.delete-card');
+            if (deleteBtn) {
+                deleteBtn.style.display = 'none';
+            }
+        });
         
         element.addEventListener('dragstart', (e) => {
             this.draggedCard = element;
@@ -228,6 +243,12 @@ export default class TaskTracker {
                     taskText.type = 'text';
                     taskText.className = 'text-task';
                     taskText.placeholder = 'Введите текст задачи...';
+
+                    taskText.addEventListener('keypress', (e) => {
+                        if (e.key === 'Enter') {
+                            this.createCardFromInput(taskText, cardsContainer);
+                        }
+                    });
                     
                     cardsContainer.appendChild(taskText);
                     taskText.focus();
@@ -252,4 +273,23 @@ export default class TaskTracker {
             });
         });
     }
+
+    createCardFromInput(inputElement, cardsContainer) {
+    const savedText = inputElement.value;
+    
+    if (savedText.trim() !== "") {
+        const textDisplay = document.createElement('li');
+        textDisplay.className = 'text-display';
+        textDisplay.textContent = savedText;
+        
+        const deleteBtn = this.createDeleteButton(textDisplay);
+        textDisplay.appendChild(deleteBtn);
+        
+        this.addDragHandlers(textDisplay);
+        
+        cardsContainer.appendChild(textDisplay);
+        inputElement.remove();
+        this.saveToLocalStorage();
+    }
+}
 }
